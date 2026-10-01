@@ -1,0 +1,97 @@
+{
+  "name": "color-picker-for-code",
+  "displayName": "Color Picker For Code",
+  "description": "Colour swatches and a visual colour picker for 0xRRGGBB and 0xRRGGBBAA hex literals in any language.",
+  "version": "0.1.0",
+  "publisher": "local",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Visualization",
+    "Other"
+  ],
+  "keywords": [
+    "color",
+    "colour",
+    "picker",
+    "hex",
+    "0x",
+    "rgba",
+    "argb"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "colorPickerForCode.pickColorAtCursor",
+        "title": "Pick Color at Cursor",
+        "category": "Color Picker For Code"
+      }
+    ],
+    "configuration": {
+      "title": "Color Picker For Code",
+      "properties": {
+        "colorPickerForCode.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Detect 0xRRGGBB / 0xRRGGBBAA literals and show colour swatches and the colour picker for them."
+        },
+        "colorPickerForCode.alphaPosition": {
+          "type": "string",
+          "enum": [
+            "end",
+            "start"
+          ],
+          "enumDescriptions": [
+            "8-digit values are 0xRRGGBBAA (alpha is the last byte, as in CSS #RRGGBBAA).",
+            "8-digit values are 0xAARRGGBB (alpha is the first byte, as in Android, Flutter and .NET)."
+          ],
+          "default": "end",
+          "description": "Where the alpha byte sits in 8-digit hex literals."
+        },
+        "colorPickerForCode.letterCase": {
+          "type": "string",
+          "enum": [
+            "auto",
+            "upper",
+            "lower"
+          ],
+          "enumDescriptions": [
+            "Match the literal being edited (upper-case when it has no letters to go by).",
+            "Always write A-F in upper case.",
+            "Always write a-f in lower case."
+          ],
+          "default": "auto",
+          "description": "Letter case of the hex digits written by the colour picker."
+        },
+        "colorPickerForCode.excludedLanguages": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [],
+          "markdownDescription": "Language identifiers (for example `plaintext` or `log`) in which 0x colour literals are *not* detected."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "test:unit": "npm run compile && node --test out/test/hexColor.test.js",
+    "test:integration": "npm run compile && node out/test/runIntegration.js",
+    "package": "npm run compile && vsce package --allow-missing-repository --skip-license",
+    "vscode:prepublish": "npm run compile"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/vscode": "^1.85.0",
+    "@vscode/test-electron": "^2.4.0",
+    "@vscode/vsce": "^3.0.0",
+    "typescript": "^5.4.0"
+  }
+}
